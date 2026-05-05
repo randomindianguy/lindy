@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>two growth levers hiding in plain sight</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F6F4EE;--bg2:#EDEBD4;--card:#FFFFFF;
+  --border:rgba(0,0,0,0.08);--border-a:rgba(74,140,128,0.2);
+  --text:#1C1C1A;--body:#4D4D46;--muted:#8A8A80;--faint:#B0B0A6;
+  --accent:#4A8C80;--accent-bg:rgba(74,140,128,0.07);
+  --gold:#9E8243;--gold-bg:rgba(158,130,67,0.1);
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono','SF Mono',monospace;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.w{max-width:700px;margin:0 auto;padding:0 28px}
+section{padding:72px 0}
+.sep{width:40px;height:1px;background:var(--border);margin:0 auto}
+p{color:var(--body);margin-bottom:18px}
+strong{color:var(--text);font-weight:500}
+
+.hero{padding:96px 0 64px;text-align:center}
+.badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--gold-bg);padding:5px 14px;border-radius:16px;margin-bottom:40px}
+.hero-q{font-family:var(--serif);font-size:clamp(26px,4.5vw,36px);line-height:1.35;color:var(--text);font-style:italic;max-width:580px;margin:0 auto 16px}
+.hero-attr{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:56px}
+.hero-punch{font-family:var(--serif);font-size:clamp(20px,3vw,26px);color:var(--text);letter-spacing:-.01em}
+.hero-punch em{color:var(--accent);font-style:normal}
+
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
+.h2{font-family:var(--serif);font-size:clamp(24px,3.5vw,30px);line-height:1.25;color:var(--text);margin-bottom:20px}
+.h3{font-family:var(--serif);font-size:20px;line-height:1.35;color:var(--text);margin:48px 0 14px}
+
+.ev{border-left:2px solid var(--accent);padding:18px 22px;margin:28px 0;background:var(--accent-bg);border-radius:0 6px 6px 0}
+.ev p{font-size:15px;color:var(--text);margin:0;font-style:italic}
+.ev .src{font-family:var(--mono);font-size:11px;color:var(--body);margin-top:8px;font-style:normal}
+
+.exp{border:1px solid var(--border-a);border-radius:10px;padding:28px 28px 24px;margin:28px 0;background:var(--card)}
+.exp .label{margin-bottom:14px}
+.exp h4{font-size:15px;font-weight:500;color:var(--text);margin:18px 0 8px}
+.exp h4:first-of-type{margin-top:0}
+.exp p{font-size:15px;margin-bottom:10px}
+.exp ul{list-style:none;padding:0;margin:0 0 14px}
+.exp li{font-size:15px;color:var(--body);padding:4px 0 4px 18px;position:relative}
+.exp li::before{content:'';position:absolute;left:0;top:13px;width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.45}
+
+.code{background:#E9E7E0;border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin:22px 0;overflow-x:auto}
+.code pre{font-family:var(--mono);font-size:12.5px;line-height:1.65;color:var(--body);white-space:pre}
+.code .kw{color:var(--accent)}
+.code .cm{color:var(--faint)}
+
+.metrics{margin:22px 0}
+.m-row{display:flex;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.m-row:last-child{border:none}
+.m-tag{font-family:var(--mono);font-size:9px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:3px;flex-shrink:0;min-width:58px;text-align:center}
+.m-tag.p{color:var(--accent);background:var(--accent-bg)}
+.m-tag.s{color:var(--muted);background:rgba(0,0,0,.04)}
+.m-tag.g{color:var(--gold);background:var(--gold-bg)}
+.m-desc{font-size:14px;color:var(--body)}
+
+.tl{margin:28px 0}
+.tl-b{padding:20px 0 20px 24px;border-left:2px solid var(--border);position:relative}
+.tl-b::before{content:'';position:absolute;left:-5px;top:24px;width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.tl-b h4{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--text);margin-bottom:8px}
+.tl-b p{font-size:15px;margin-bottom:6px}
+.tl-b .del{font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:10px}
+
+.kill{border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin:14px 0;background:var(--card)}
+.kill h4{font-size:14px;font-weight:500;color:var(--text);margin-bottom:6px}
+.kill p{font-size:14px;color:var(--muted);margin:0}
+
+.footer{text-align:center;padding:48px 0 64px;color:var(--faint);font-family:var(--mono);font-size:11px}
+.footer a{color:var(--accent);text-decoration:none}
+
+@media(max-width:600px){.w{padding:0 18px}section{padding:56px 0}.hero{padding:72px 0 48px}.exp{padding:22px 20px 18px}.code{padding:16px 14px}.sys-grid{grid-template-columns:1fr !important}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+<div class="w">
+  <div class="badge">growth internship pitch — lindy assistant</div>
+  <div class="hero-q">"There's a specific moment in the second week when Lindy caught something I would have completely missed."</div>
+  <div class="hero-attr">— Mejba Ahmed, two-week Lindy review, April 2026</div>
+  <div class="hero-punch">the trial is <em>seven days.</em></div>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ─── THE SYSTEM ─── -->
+<section>
+<div class="w">
+  <div class="label">the system</div>
+  <div class="h2">four loops, one binding constraint</div>
+  <p>Lindy is post-rebuild and scaling. High seven figures ARR, ~35 employees, growing fast enough that Flo rebuilt the entire product at 100K MRR because "99.9% of revenue existed in the future, not the present." The growth function is being built before the marketing team hires.</p>
+
+  <div class="sys-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0">
+    <div style="border:1.5px solid var(--accent);border-radius:10px;padding:20px 22px;border-style:dashed">
+      <div style="font-family:var(--serif);font-size:18px;color:var(--text);margin-bottom:6px">personalization loop</div>
+      <div style="font-size:14px;color:var(--body);margin-bottom:10px">usage → learning → better outputs → trust → more usage</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--accent)">needs 5-10 days to compound</div>
+    </div>
+    <div style="border:1.5px solid #C45A3B;border-radius:10px;padding:20px 22px">
+      <div style="font-family:var(--serif);font-size:18px;color:var(--text);margin-bottom:6px">trial clock</div>
+      <div style="font-size:14px;color:var(--body);margin-bottom:10px">sign up → 7 days → paywall</div>
+      <div style="font-family:var(--mono);font-size:11px;color:#C45A3B">caps the time loop 1 has to prove itself</div>
+    </div>
+  </div>
+  <div style="font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;margin:6px 0 18px">↑ the thesis — these two loops collide ↑</div>
+  <div class="sys-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px">
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-family:var(--serif);font-size:15px;color:var(--muted);margin-bottom:4px">scheduling viral loop</div>
+      <div style="font-size:13px;color:var(--muted)">lindy schedules → non-user exposed → sign-up</div>
+    </div>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:16px 18px">
+      <div style="font-family:var(--serif);font-size:15px;color:var(--muted);margin-bottom:4px">social proof loop</div>
+      <div style="font-size:13px;color:var(--muted)">proactive catch → screenshot → organic acq.</div>
+    </div>
+  </div>
+
+  <p>Lindy moved Assistant to flat-rate subscription, which removes the per-action cost anxiety reviewers flagged on Agent Builder. The shared pricing page still mixes the two models, and perception hasn't caught up.</p>
+  <p><strong>Two of these loops have constraints worth addressing in the first 90 days.</strong></p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ─── LEVER 1 ─── -->
+<section>
+<div class="w">
+  <div class="label">lever 1</div>
+  <div class="h2">the activation timing collision</div>
+
+  <p>Lindy already has the calibration surface. Drafting Instructions in settings lets users describe their tone, sentence length, and sign-offs. VIP email alerts let users name priority contacts. Both work for the user who finds them.</p>
+  <p>The problem is <strong>when</strong> they're surfaced. Settings pages get discovered by power users in week 2, after early drafts haven't yet matched their voice. New users on day 1 don't navigate to settings. They just text Lindy back.</p>
+  <p>The pricing page says it directly: <em>"Lindy observes how you write emails, respond to messages, and handle your calendar over time. The more you use it, the better it gets."</em> The trial is 7 days. The product's strongest moments require observation time that extends past the trial window.</p>
+
+  <div class="h3">the mechanism</div>
+
+  <p>On day 1 the user is most willing to try Lindy and least equipped to direct it. They don't know what to ask for, and Lindy doesn't know how they write. Willingness decays daily. Capability climbs only as fast as Lindy can observe: each approved draft, each calendar preference, each ignored email teaches it something.</p>
+  <p><strong>The point where the user knows what to delegate and Lindy delivers it in their voice lands somewhere in the second week.</strong> The 7-day trial closes before that happens.</p>
+  <p>Day 1 meeting prep draws from web research and LinkedIn lookups. Day 7 prep pulls past meeting history, prior email threads, and pattern recognition. That progression is the capability curve, and anyone on the team can verify it by comparing their own first and tenth meeting brief.</p>
+
+  <div class="h3">the experiment</div>
+
+  <div class="exp">
+    <div class="label">the test</div>
+    <p><strong>Half of new trial users get 4 quick questions from Lindy in their first iMessage conversation. The other half get the current experience.</strong> After 7 days, compare how many in each group converted to paid.</p>
+
+    <h4>the 4 questions</h4>
+    <ul>
+      <li>"Paste 2-3 emails you've sent that sound most like you"</li>
+      <li>"Who are your 5 VIP contacts?"</li>
+      <li>"Any calendar blocks I should protect?"</li>
+      <li>"Formal or casual with clients?"</li>
+    </ul>
+    <p>These aren't new features. Drafting Instructions and VIP alerts already exist in settings. The test moves them from a settings page to the first conversation, where the user is most willing and the personalization engine has the most to gain.</p>
+
+    <h4>why this should work</h4>
+    <p>Whatever the underlying mechanism (context accumulation, retrieval, or fine-tuning on user feedback), the input is volume of observation. Three pasted emails compress days of passive observation into seconds of explicit signal. If Lindy knows your voice and priorities from hour 1 instead of day 7, its outputs are better sooner, so you're more likely to pay.</p>
+  </div>
+
+  <div class="metrics">
+    <div class="m-row"><span class="m-tag p">primary</span><span class="m-desc">Day-7 trial conversion rate (variant vs control)</span></div>
+    <div class="m-row"><span class="m-tag s">secondary</span><span class="m-desc">Time to first unedited draft — days until Lindy produces a draft the user sends without changes</span></div>
+    <div class="m-row"><span class="m-tag s">secondary</span><span class="m-desc">Day-3 engagement rate — are users interacting more when early outputs are better?</span></div>
+    <div class="m-row"><span class="m-tag g">guardrail</span><span class="m-desc">Setup completion rate — does the extra 4 minutes suppress sign-ups?</span></div>
+  </div>
+
+  <p><strong>Why this is counterintuitive:</strong> the 60-second setup optimizes for sign-up completion. Trial conversion is a different number. More setup friction leads to faster personalization, which leads to a faster value moment, which leads to higher conversion. Testable.</p>
+
+  <div class="h3">if it fails</div>
+  <p>A negative result at the aggregate level doesn't kill the hypothesis. It tells you where to look next. Segment the failing cohort: did certain user types still convert at higher rates? If founders converted but individual contributors didn't, the onboarding questions may be calibrated for one workflow but not another. If completion rate on the 4 questions was low, the problem is the prompts themselves, not the timing. If completion was high but conversion didn't move, the bottleneck isn't calibration speed — it might be trigger cadence (how often Lindy re-engages during the trial) or initial output quality independent of personalization.</p>
+  <p>Each failure mode points to a different next experiment. That's the value of running the test: even a loss narrows the search space.</p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ─── LEVER 2 ─── -->
+<section>
+<div class="w">
+  <div class="label">lever 2</div>
+  <div class="h2">the viral loop that's already half-shipped</div>
+
+  <p>The JD calls out viral loops as a feature category to build. Lindy has the email half already shipped. It's turned off.</p>
+  <p>The "Sent from Lindy" signature in email drafting is <strong>off by default</strong>. The equivalent for calendar invites doesn't exist at all. Both are passive channels that expose the product to non-users every time the product is used, without requiring anyone to opt in or refer.</p>
+  <p>The email signature is off-by-default because "Sent from Lindy" implies AI authorship, which is a professional sensitivity. "Scheduled by Lindy" on a calendar invite is coordination metadata. It's closer to "Sent via Calendly" than "Written by AI." Different sensitivity profile.</p>
+
+  <div class="h3">the experiment</div>
+
+  <div class="exp">
+    <div class="label">two-part test</div>
+
+    <h4>part 1 — do new users want the email signature?</h4>
+    <p><strong>During onboarding, ask new trial users: "Want recipients to know Lindy helped draft this?"</strong> Measure how many turn it on when asked vs. how many currently find the toggle in settings on their own. Same feature, just surfaced earlier. Puts a number on whether the sensitivity concern holds for new users.</p>
+
+    <h4>part 2 — add the calendar equivalent</h4>
+    <p><strong>Add a "Scheduled by Lindy" footer to calendar invites with a link to a landing page. Count how many non-users click through and start a trial.</strong></p>
+    <ul>
+      <li>Landing page at lindy.ai/invited (purpose-built, not the main homepage)</li>
+      <li>Copy: "Someone you know uses Lindy to manage their schedule. Try it free for 7 days."</li>
+    </ul>
+    <p>Turn on one half, ship the other half, instrument both.</p>
+  </div>
+
+  <div class="metrics">
+    <div class="m-row"><span class="m-tag p">primary</span><span class="m-desc">Trial sign-ups attributed to /invited page + email signature combined</span></div>
+    <div class="m-row"><span class="m-tag s">secondary</span><span class="m-desc">Email signature opt-in rate when prompted during onboarding vs. baseline settings-page discovery</span></div>
+    <div class="m-row"><span class="m-tag s">secondary</span><span class="m-desc">Click-through rate on each surface (email vs calendar)</span></div>
+    <div class="m-row"><span class="m-tag g">guardrail</span><span class="m-desc">Calendar footer opt-out rate — if high, the team's existing sensitivity concerns hold for this surface too</span></div>
+  </div>
+
+  <p>I don't have the meeting-frequency data to estimate a referral coefficient. Guessing at a number the team can check against a dashboard in 30 seconds would just be performing confidence. The instrumentation gives you the number you'd actually need to decide whether this loop is worth investing in: non-user exposure rate per active user per week, compared across both surfaces.</p>
+
+  <div class="h3">if it fails</div>
+  <p>Part 1 and Part 2 can fail independently, and each failure teaches something different. If email signature opt-in is low even when prompted, the team's original sensitivity concern was right and the channel isn't worth forcing. Move on. If calendar footer click-through is near zero, non-users may not notice footer text in calendar invites, and the exposure surface needs to be more visible (invite title vs. footer, for example). If click-through is healthy but trial starts are low, the /invited landing page isn't converting — that's a copy and targeting problem, not a channel problem.</p>
+  <p>The worst outcome isn't a failed test. It's never measuring the channel at all and continuing to guess whether built-in referral matters.</p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ─── 90-DAY PLAN ─── -->
+<section>
+<div class="w">
+  <div class="label">90-day plan</div>
+  <div class="h2">intern scope → FT pipeline</div>
+
+  <div class="tl">
+    <div class="tl-b">
+      <h4>month 1: instrument and diagnose</h4>
+      <p><strong>Week 1:</strong> Write the Lever 2 spec. Part 1: propose onboarding prompt that surfaces the existing email signature toggle to new trial users. Part 2: spec the calendar invite footer, /invited landing page, and UTM structure. Instrument the attribution events.</p>
+      <p><strong>Week 2-3:</strong> Eng ships Part 1 (onboarding prompt, low effort) and begins Part 2 (new surface + landing page). Data starts collecting. In parallel: build the activation timing dashboard, define candidate activation metrics, segment trial users by which value moment they hit, when, and whether they converted.</p>
+      <p><strong>Week 3-4:</strong> First read on email signature opt-in data. Identify the actual time-to-crossing for the 50th and 75th percentile trial user. Calendar footer goes live.</p>
+      <div class="del">deliverable: activation timing dashboard + email signature opt-in data + calendar footer live</div>
+    </div>
+
+    <div class="tl-b">
+      <h4>month 2: experiment</h4>
+      <p><strong>Week 5-6:</strong> Launch "Teach Lindy about you" A/B test (Lever 1). Control = current 60-second setup. Variant = 60-second setup + 5-minute structured onboarding via iMessage.</p>
+      <p><strong>Week 6-7:</strong> First read on Lever 1. Iterate on variant based on early data — likely a second pass on which prompts compress observation time most efficiently. In parallel: analyze Lever 2 data across both surfaces. Compare opt-in/opt-out rates and attribution rates.</p>
+      <p><strong>Week 7-8:</strong> Continue running Lever 1 to significance. Prepare dual-surface referral attribution report.</p>
+      <div class="del">deliverable: one live experiment at or near significance + dual-surface attribution report</div>
+    </div>
+
+    <div class="tl-b">
+      <h4>month 3: scale and handoff</h4>
+      <p><strong>Week 9-10:</strong> Read experiment results. Identify winning variants. Calculate impact on trial conversion and organic sign-ups.</p>
+      <p><strong>Week 10-12:</strong> Build the handoff package for the FT Growth PM. The handoff is three things: a north star metric proposal, a growth levers map that decomposes it, and a prioritized experiment backlog with the first results attached.</p>
+      <div class="del">deliverable: growth playbook + experiment database</div>
+    </div>
+  </div>
+
+  <p>The intern scope builds the measurement infrastructure and tests the first growth hypotheses. The FT role takes what works and scales it: expanding the activation flow, deciding whether the scheduling loop deserves a full investment, and running the next round of experiments.</p>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ─── WHY ME ─── -->
+<section>
+<div class="w">
+  <div class="label">why me</div>
+  <div class="h2">same shape, different domain</div>
+
+  <p>I've solved this shape of problem before. At Interview Kickstart, our AI courses had strong webinar demand but conversion to paying student was well below company average. Roughly $200K in lost revenue. I dug in and found it: trust was collapsing at the decision point because sales reps couldn't confidently explain course content. The obvious fix was sales training. I didn't want that. Training is a recurring tax. Every new hire, every new course, you're back to square one.</p>
+  <p>Instead I went upstream. Built expert-led video assets that delivered credibility independent of who was on the call. A/B tested with 250+ webinar registrants. The group that received expert videos converted at <strong>14% higher rate</strong>. $200K in incremental revenue from a fix that didn't need to be re-applied every quarter.</p>
+  <p>Same shape here. Lindy's trial delivers uncalibrated outputs while it passively learns. That's the unconfident-rep equivalent. The fix isn't waiting longer. It's front-loading calibration into the first hour so the product sounds right from day 1.</p>
+  <p><strong>The domain changes. The move is the same.</strong></p>
+
+  <div class="ev">
+    <p>CPT-authorized through Purdue — no sponsorship needed for the internship.</p>
+    <div class="src">Sidharth Sundaram · MS Engineering Management, Purdue · sundar84@purdue.edu</div>
+  </div>
+</div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ─── KILLED IDEAS ─── -->
+<section>
+<div class="w">
+  <div class="label">killed ideas</div>
+  <div class="h2">what I considered and why it died</div>
+
+  <div class="kill">
+    <h4>killed: "pitch pricing changes"</h4>
+    <p>The credit anxiety reviewers flagged is on Agent Builder. The docs confirm Assistant runs on flat subscription with no per-task credit system. The wedge is making the existing model's behavioral advantage felt during the trial, not redesigning the model.</p>
+  </div>
+
+  <div class="kill">
+    <h4>killed: "build a template marketplace"</h4>
+    <p>The JD lists "marketplaces" as a growth feature to build. Pitching their own roadmap back to them is not a finding.</p>
+  </div>
+</div>
+</section>
+
+<div class="footer">
+  <p>built by <a href="https://sidharthsundaram.com" target="_blank">sidharth sundaram</a> · <a href="https://linkedin.com/in/sidharthsundaram" target="_blank">linkedin</a></p>
+</div>
+
+</body>
+</html>
